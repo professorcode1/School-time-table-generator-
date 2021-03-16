@@ -1,0 +1,93 @@
+6
+8
+16
+y
+maths
+commerce
+eco
+english
+phy ed
+hindi
+pol sc
+home sc
+history
+geo
+-1
+pooja devi
+-1
+usha
+anu goel
+midhat noor
+-1
+kamlesh
+vandana tripathi
+-1
+kavita rani
+bhawnaa
+shubham
+monica
+-1
+chemma choudhary
+manju sawariya
+phy_ed_hlpr
+-1
+manisha
+vinoda
+suman shankhuar
+nisha par
+neena goel
+jyoti sharma
+-1
+parminder
+shakeela
+rama batra
+anita arya
+suman
+suman tomar
+-1
+aakriti
+suman yadav
+home_sc_hlpr
+-1
+kripa
+pooja singhal
+-1
+no one
+-1
+11
+a 0 5 
+1 18 2 9 3 6 4 6 0 9
+b 3 5
+1 18 2 9 3 9 4 6 5 6
+c 4 6
+5 6 6 9 7 9 3 9 4 6 2 9
+d 16 6
+5 6 6 9 7 9 3 9 4 6 8 9
+e 21 6
+5 6 6 9 7 9 3 9 4 6 9 9
+f 15 6
+5 6 6 9 7 9 3 9 4 6 8 9
+g 24 6
+5 6 6 9 7 9 3 9 4 6 9 9
+h 29 6
+5 6 6 9 7 9 3 9 4 6 8 9
+-1
+12 
+a 1 5
+1 18 2 9 3 6 4 6 0 9
+b 2 5
+1 18 2 9 3 9 4 6 5 6
+c 5 6
+5 6 6 9 7 9 3 9 4 6 2 9
+d 28 6
+5 6 6 9 7 9 3 9 4 6 8 9
+e 14 6
+5 6 6 9 7 9 3 9 4 6 9 9
+f 22 6
+5 6 6 9 7 9 3 9 4 6 8 9
+g 18 6
+5 6 6 9 7 9 3 9 4 6 9 9
+h 23 6 
+5 6 6 9 7 9 3 9 4 6 8 9
+-1
+-1
