@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
+#include <future>
+#include <thread>
 using namespace std;
 int number_of_periods_per_day, number_of_days_school_is_open, CLASSES;
 bool first_period_must_be_class_teacher;
-const int population_size{80}, convergence_criteria{40};
+const int population_size{200}, convergence_criteria{40};
 const float mutation_intensity{0.01}, fraction_of_population_mutated{0.25}, fraction_of_population_elite{0.1}, mutation_increase_factor{100};
 mt19937 g2(chrono::system_clock::now().time_since_epoch().count());
 
@@ -694,7 +696,12 @@ void genetic_algorithm_for_time_table(time_table initial_time_table)
     for (int i = 0; i < population_size; i++)
         next_generation.at(i).shuffle();
     merge_sort(next_generation, 0, next_generation.size() - 1);
-    int generation{0}, convergence_generation{0};
+    int generation{0}, convergence_generation{0} , numberOfThreads = std::thread::hardware_concurrency(),crossovers = population_size-ceil(fraction_of_population_elite * population_size);
+    cout<<crossovers<<endl;
+    if(!numberOfThreads)
+        numberOfThreads++; //might be zero if hardware_concurrency() fails
+    const int workPerThread = floor(static_cast<float>(crossovers) / numberOfThreads);
+    vector< future < vector < time_table > > > multiThread; //we multithread the crossover
     float convergence_value{next_generation.front().fitness()};
     while (convergence_value < 0 || generation - convergence_generation <= convergence_criteria)
     {
@@ -706,8 +713,25 @@ void genetic_algorithm_for_time_table(time_table initial_time_table)
             next_generation.push_back(previous_generation.at(i));
 
         //creating the rest of the population via selection and mixing
-        for (int loop_var = ceil(fraction_of_population_elite * population_size); loop_var < population_size; loop_var++)
-            next_generation.push_back(time_table(previous_generation.at(tournament_selection(0, population_size - 1)), previous_generation.at(tournament_selection(0, population_size - 1))));
+        //for (int loop_var = ceil(fraction_of_population_elite * population_size); loop_var < population_size; loop_var++)
+        //    next_generation.push_back(time_table(previous_generation.at(tournament_selection(0, population_size - 1)), previous_generation.at(tournament_selection(0, population_size - 1))));
+
+        multiThread.clear();
+        for(int i=0 ; i<numberOfThreads ; i++ )
+            multiThread.push_back(async(std::launch::async,[&previous_generation](const int numberOfTablesRequired)->vector<time_table>{
+                //cout<<numberOfTablesRequired << endl;
+                vector<time_table> returnVec;
+                for (int loop_var = 0; loop_var < numberOfTablesRequired; loop_var++)
+                    returnVec.push_back(time_table(previous_generation.at(tournament_selection(0, population_size - 1)), previous_generation.at(tournament_selection(0, population_size - 1))));
+                return returnVec;
+            },( (i+1)!= numberOfThreads ? workPerThread : crossovers - i * workPerThread)));
+
+        for(int i=0 ; i<numberOfThreads ; i++ )
+            multiThread.at(i).wait();
+        
+        for(int i=0 ; i<numberOfThreads ; i++)
+            for(const auto table : multiThread.at(i).get())
+                next_generation.push_back(table);
 
         //mutating some of it
         for (int i = 0; i < ceil(fraction_of_population_mutated * population_size); i++)
